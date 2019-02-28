@@ -17,16 +17,15 @@
 <body>
   <div class="container">
     <h1>Dexter</h1>
-    <h2>The Original 151 Dex</h2>
+    <h2>Original 151 Dex</h2>
     <div class="input-group input-group-lg">
       <input id="monName" class="form-control" type="text" placeholder="Pok&eacute;mon Name...">
       <input id="monType" class="form-control" type="text" placeholder="Pok&eacute;mon Type...">
-      <input id="monEvolve" class="form-control" type="text" placeholder="Pok&eacute;mon Evolution Level / Stone">
+      <input id="monEvolve" class="form-control" type="text" placeholder="Pok&eacute;mon Evolution Level / Stone...">
     </div>
     <div class="output">
       <ul id="pokemon">
         <li class="card">
-          <img src="/images/001.png" alt="Bulbasaur Image">
           <h3>1</h3>
           <h3>Bulbasaur</h3>
           <h4>Type: Poison, Grass</h4>
@@ -947,7 +946,7 @@
       pokemon = document.getElementsByClassName("card");
       for (let i = 0; i < pokemon.length; i++) {
         let name = pokemon[i].getElementsByTagName("h3")[1];
-        if (name.innerHTML.toUpperCase().indexOf(nameInput) > -1) {
+        if (name.innerHTML.toUpperCase().startsWith(nameInput)) {
           pokemon[i].style.display = "";
         }
         else {
