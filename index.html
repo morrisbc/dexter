@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script type="text/javascript" src="./data/kanto.json"></script>
+  <script type="text/javascript" src="./scripts/main.js"></script>
+  <title>Dexter | 151 Dex</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Dexter</h1>
+    <h2>The Original 151 Dex</h2>
+    <div class="input-group input-group-lg">
+      <input id="input" class="form-control" type="text" placeholder="Pok&eacute;mon Name...">
+    </div>
+    <div class="output">
+      <ul id="pokemon">
+        <li class="card">
+          <h3>Bulbasaur</h3>
+          <h4>Type: Poison, Grass</h4>
+          <h4>Evolves: 16</h4>
+        </li>
+        <li class="card">
+          <h3>Ivysaur</h3>
+          <h4>Type: Poison, Grass</h4>
+          <h4>Evolves: 36</h4>
+        </li>
+        <li class="card">
+          <h3>Venusaur</h3>
+          <h4>Type: Poison, Grass</h4>
+          <h4>Evolves:</h4>
+        </li>
+        <li class="card">
+          <h3>Charmander</h3>
+          <h4>Type: Fire</h4>
+          <h4>Evolves: 16</h4>
+        </li>
+        <li class="card">
+          <h3>Charmeleon</h3>
+          <h4>Type: Fire</h4>
+          <h4>Evolves: 36</h4>
+        </li>
+        <li class="card">
+          <h3>Charizard</h3>
+          <h4>Type: Fire, Flying</h4>
+          <h4>Evolves:</h4>
+        </li>
+        <li class="card">
+          <h3>Squirtle</h3>
+          <h4>Type: Water</h4>
+          <h4>Evolves: 16</h4>
+        </li>
+        <li class="card">
+          <h3>Wartortle</h3>
+          <h4>Type: Water</h4>
+          <h4>Evolves: 36</h4>
+        </li>
+        <li class="card">
+          <h3>Blastoise</h3>
+          <h4>Type: Water</h4>
+          <h4>Evolves:</h4>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("input").addEventListener('keyup', filterPokemon);
+
+    function filterPokemon() {
+      let input = document.getElementById("input").value;
+
+      pokemon = document.getElementsByClassName("card");
+      for (let i = 0; i < pokemon.length; i++) {
+        let name = pokemon[i].getElementsByTagName("h3")[0];
+        if (name.innerHTML.indexOf(input) > -1) {
+          pokemon[i].style.display = "";
+        }
+        else {
+          pokemon[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
