@@ -1,20 +1,25 @@
 * {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 .container {
-  background: #f08a8a;
-  text-align: center;
-  padding: 1rem;
-  color: white;
+	background: #c50505;
+	text-align: center;
+	padding: 1rem;
+	color: white;
+}
+
+.form-control {
+	margin: 0 1rem;
 }
 
 h1 {
-  font-family: 'Prompt', sans-serif;
+	font-family: 'Prompt', sans-serif;
 }
 
 .card {
-  margin: 1rem 0;
-  color: black;
+	margin: 1rem;
+	color: black;
+	background: #ccc;
 }
