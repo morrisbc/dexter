@@ -23,3 +23,8 @@ h1 {
 	color: black;
 	background: #ccc;
 }
+
+.card img {
+	width: 100px;
+	margin: auto;
+}
