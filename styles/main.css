@@ -1,30 +1,15 @@
-* {
-	margin: 0;
-	padding: 0;
-}
-
-.container {
-	background: #c50505;
-	text-align: center;
-	padding: 1rem;
-	color: white;
-}
-
-.form-control {
-	margin: 0 1rem;
-}
-
-h1 {
-	font-family: 'Prompt', sans-serif;
+body {
+  padding-top: 1rem;
 }
 
 .card {
-	margin: 1rem;
-	color: black;
-	background: #ccc;
+  margin: 1rem 0;
 }
 
-.card img {
-	width: 100px;
-	margin: auto;
+#img-front,
+#img-back {
+  min-width: 130px;
+  min-height: 130px;
+  width: auto;
+  height: auto;
 }
