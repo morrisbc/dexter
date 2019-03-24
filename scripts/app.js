@@ -8,10 +8,12 @@ const http = new httpRequest();
 function getMon(e) {
   // Get page elements to populate the data into
   let name = document.getElementById("pokemon-name").value;
+  let output = document.getElementById("output");
   let nameHeading = document.getElementById("name-result");
   let front = document.getElementById("img-front");
   let back = document.getElementById("img-back");
   let types = document.getElementById("type-result");
+  let dexNum = document.getElementById("dex-num");
 
   // Get the info from the API and display on screen
   http.get(
@@ -20,6 +22,9 @@ function getMon(e) {
       console.log(response);
       // The HTTP request completed successfully
       if (err === null) {
+        // Populate the pokedex number
+        dexNum.innerText = `No. ${response.id}`;
+
         // Populate the images, front and back of the Pokemon
         front.setAttribute("src", `${response.sprites.front_default}`);
         back.setAttribute("src", `${response.sprites.back_default}`);
@@ -32,15 +37,14 @@ function getMon(e) {
         // new query
         types.innerHTML = "";
         response.types.forEach(monType => {
-          console.log(monType);
-          types.innerHTML += `<li class="list-group-item">${monType.type.name
-            .charAt(0)
-            .toUpperCase() + monType.type.name.slice(1)}</li>`;
+          types.innerHTML += `<span class="btn type ${
+            monType.type.name
+          }">${monType.type.name.charAt(0).toUpperCase() +
+            monType.type.name.slice(1)}</span>`;
         });
+        output.style.display = "block";
       } else {
-        nameHeading.innerHTML = err;
-        front.style.display = "none";
-        back.style.display = "none";
+        output.style.display = "none";
       }
     }
   );
