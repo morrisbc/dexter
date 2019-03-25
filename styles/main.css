@@ -6,6 +6,11 @@ body {
   margin: 1rem 0;
 }
 
+#btn-male,
+#btn-female {
+  display: none;
+}
+
 #img-front,
 #img-back {
   min-width: 130px;
