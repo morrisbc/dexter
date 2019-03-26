@@ -1,2 +1,2 @@
 # dexter
-Pokedex app for the original 151.
+Pokedex app.
