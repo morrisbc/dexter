@@ -25,6 +25,10 @@ body {
   height: auto;
 }
 
+#type-result {
+  margin-top: 1rem;
+}
+
 .type {
   color: white;
   margin-left: 1rem;
@@ -36,8 +40,12 @@ body {
   margin-left: 0;
 }
 
-.weaknesses {
+.body-measures {
   margin-top: 1rem;
+}
+
+.weight-flex {
+  margin-left: 5rem;
 }
 
 .normal {

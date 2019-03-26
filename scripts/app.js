@@ -45,6 +45,8 @@ function getPokemon(e) {
   let back = document.getElementById("img-back");
   let types = document.getElementById("type-result");
   let dexNum = document.getElementById("dex-num");
+  let height = document.getElementById("height-val");
+  let weight = document.getElementById("weight-val");
 
   if (name.endsWith("\u2642")) {
     name = name.replace("\u2642", "-m");
@@ -66,7 +68,11 @@ function getPokemon(e) {
         front.setAttribute("src", `${response.sprites.front_default}`);
         back.setAttribute("src", `${response.sprites.back_default}`);
 
+        // Populate the name field with the name value from the response since
+        // the value of the input field isn't guaranteed to be the name (can
+        // also be dex number)
         name = response.name;
+
         // Append the gender symbol back onto the end of the name for
         // nidoran
         if (name.startsWith("nidoran") && name.endsWith("-m")) {
@@ -88,6 +94,15 @@ function getPokemon(e) {
           }">${monType.type.name.charAt(0).toUpperCase() +
             monType.type.name.slice(1)}</span>`;
         });
+
+        // Clear height and weight from previous query
+        height.innerText = "";
+        weight.innerText = "";
+
+        // Update height and weight with new query values
+        height.innerText = response.height + " m";
+        weight.innerText = response.weight + " kg";
+
         output.style.display = "block";
       } else {
         output.style.display = "none";

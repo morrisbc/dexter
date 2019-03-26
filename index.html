@@ -70,28 +70,50 @@
           </div>
         </form>
       </div>
-      <div id="output" class="card card-body">
-        <h3 id="dex-num" class="text-center"></h3>
-        <div class="images d-flex justify-content-center">
-          <img
-            id="img-front"
-            class="rounded img-thumbnail border-0"
-            src=""
-            alt="Pok&eacute;mon Front"
-          />
-          <img
-            id="img-back"
-            class="rounded img-thumbnail border-0"
-            src=""
-            alt="Pok&eacute;mon Back"
-          />
+      <div id="output">
+        <div id="mon-info" class="card card-body">
+          <h3 id="dex-num" class="text-center"></h3>
+          <div class="images d-flex justify-content-center">
+            <img
+              id="img-front"
+              class="rounded img-thumbnail border-0"
+              src=""
+              alt="Pok&eacute;mon Front"
+            />
+            <img
+              id="img-back"
+              class="rounded img-thumbnail border-0"
+              src=""
+              alt="Pok&eacute;mon Back"
+            />
+          </div>
+          <h3 class="text-center" id="name-result"></h3>
+          <div
+            class="text-center d-flex justify-content-center"
+            id="type-result"
+          ></div>
+          <div class="body-measures d-flex justify-content-center">
+            <div class="height-flex d-flex flex-column align-items-center">
+              <h4 id="mon-height" class="text-center">Height</h4>
+              <p id="height-val" class="text-center"></p>
+            </div>
+            <div class="weight-flex d-flex flex-column align-items-center">
+              <h4 id="mon-weight" class="text-center">Weight</h4>
+              <p id="weight-val" class="text-center"></p>
+            </div>
+          </div>
         </div>
-        <h2 class="text-center" id="name-result"></h2>
-        <div
-          class="text-center d-flex justify-content-center"
-          id="type-result"
-        ></div>
-        <div class="matchups d-flex flex-column justify-content-around"></div>
+        <div class="type-matchups card card-body">
+          <h2 class="text-center">Type Matchups</h2>
+          <div class="matchup-flex d-flex justify-content-around">
+            <div class="attack">
+              <h3>Attack</h3>
+            </div>
+            <div class="defense">
+              <h3>Defense</h3>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script
