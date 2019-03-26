@@ -24,19 +24,49 @@
               type="text"
               class="form-control"
               id="pokemon-name"
-              placeholder="Pok&eacute;mon Name..."
+              placeholder="Pok&eacute;mon Name or Pok&eacute;dex Number ..."
               value="Gengar"
             />
           </div>
-          <div>
+          <div class="d-flex">
             <input
               id="get-mons"
               class="btn btn-primary"
               type="submit"
               value="Get Pok&eacute;mon"
             />
-            <input id="btn-male"class="btn btn-secondary" type="button" value="&male;">
-            <input id="btn-female" class="btn btn-secondary" type="button" value="&female;">
+            <input
+              id="btn-male"
+              class="btn btn-secondary"
+              type="button"
+              value="&#x02642;"
+            />
+            <input
+              id="btn-female"
+              class="btn btn-secondary"
+              type="button"
+              value="&#x02640;"
+            />
+            <div id="deoxysMenu" class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Deoxys Forms
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a id="deoxys-normal" class="dropdown-item" href="#">Normal</a>
+                <a id="deoxys-attack" class="dropdown-item" href="#">Attack</a>
+                <a id="deoxys-speed" class="dropdown-item" href="#">Speed</a>
+                <a id="deoxys-defense" class="dropdown-item" href="#"
+                  >Defense</a
+                >
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -61,9 +91,24 @@
           class="text-center d-flex justify-content-center"
           id="type-result"
         ></div>
+        <div class="matchups d-flex flex-column justify-content-around"></div>
       </div>
     </div>
-    <script src="scripts/http.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <script src="scripts/app.js"></script>
   </body>
 </html>

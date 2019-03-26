@@ -9,6 +9,12 @@ body {
 #btn-male,
 #btn-female {
   display: none;
+  margin-left: 1rem;
+}
+
+.dropdown {
+  margin-left: 1rem;
+  display: none;
 }
 
 #img-front,
@@ -22,12 +28,16 @@ body {
 .type {
   color: white;
   margin-left: 1rem;
-  min-width: 65px;
+  min-width: 85px;
 }
 
 /*Removes the left margin on the first type box*/
 .type:first-of-type {
   margin-left: 0;
+}
+
+.weaknesses {
+  margin-top: 1rem;
 }
 
 .normal {
