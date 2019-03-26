@@ -110,8 +110,8 @@ function getPokemon(e) {
         weight.innerText = "";
 
         // Update height and weight with new query values
-        height.innerText = response.height + " m";
-        weight.innerText = response.weight + " kg";
+        height.innerText = response.height / 10 + " m";
+        weight.innerText = response.weight / 10 + " kg";
 
         output.style.display = "block";
       } else {
