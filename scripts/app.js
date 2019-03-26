@@ -2,12 +2,8 @@
 addEventListener("DOMContentLoaded", getPokemon);
 document.getElementById("pokemon-name").addEventListener("keyup", addOptions);
 document.getElementById("get-mons").addEventListener("click", getPokemon);
-document.getElementById("btn-male").addEventListener("click", () => {
-  document.getElementById("pokemon-name").value += "\u2642";
-});
-document.getElementById("btn-female").addEventListener("click", () => {
-  document.getElementById("pokemon-name").value += "\u2640";
-});
+document.getElementById("btn-male").addEventListener("click", addGender);
+document.getElementById("btn-female").addEventListener("click", addGender);
 document
   .getElementById("deoxys-normal")
   .addEventListener("click", addDeoxysForm);
@@ -20,6 +16,20 @@ document
 document
   .getElementById("deoxys-speed")
   .addEventListener("click", addDeoxysForm);
+
+// Adds the gender symbol onto the end of "nidoran" when the user clicks
+// the buttons that have appeared
+function addGender(e) {
+  {
+    let name = document.getElementById("pokemon-name");
+    if (name.value.endsWith("\u2642") || name.value.endsWith("\u2640")) {
+      name.value =
+        name.value.substring(0, name.value.length - 1) + e.target.value;
+    } else {
+      name.value += e.target.value;
+    }
+  }
+}
 
 // Changes the text in the input field for deoxys variants depending on
 // the selection from the dropdown menu
@@ -136,7 +146,7 @@ function addOptions(e) {
 
   // Display the gender buttons when the user types "nidoran" and remove
   // them as soon as the input field no longer equals "nidoran" (case-insensitive)
-  if (e.target.value.toLowerCase() === "nidoran") {
+  if (e.target.value.toLowerCase().startsWith("nidoran")) {
     maleBtn.style.display = "inline";
     femaleBtn.style.display = "inline";
   } else {
