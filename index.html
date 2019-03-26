@@ -10,19 +10,25 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <link
+      href="https://fonts.googleapis.com/css?family=Luckiest+Guy"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles/main.css" />
     <title>DexterV2</title>
   </head>
-  <body>
-    <div class="container">
-      <div class="card card-body">
-        <h1 class="text-center">DexterV2</h1>
+  <body class="bg-dark">
+    <div class="container bg-dark">
+      <div class="card card-body bg-dark text-white border-white">
+        <h1 id="title-heading" class="text-center">
+          <span id="dexter">Dexter</span>V2
+        </h1>
         <form class="mon-form">
           <div class="form-group">
             <label for="pokemon-name">Pok&eacute;mon Name</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control bg-dark text-white border-white"
               id="pokemon-name"
               placeholder="Pok&eacute;mon Name or Pok&eacute;dex Number ..."
               value="Gengar"
@@ -37,13 +43,13 @@
             />
             <input
               id="btn-male"
-              class="btn btn-secondary text-center"
+              class="btn btn-info text-center"
               type="button"
               value="&#x02642;"
             />
             <input
               id="btn-female"
-              class="btn btn-secondary text-center"
+              class="btn btn-info text-center"
               type="button"
               value="&#x02640;"
             />
@@ -71,18 +77,21 @@
         </form>
       </div>
       <div id="output">
-        <div id="mon-info" class="card card-body">
+        <div
+          id="mon-info"
+          class="card card-body bg-dark text-white border-white"
+        >
           <h3 id="dex-num" class="text-center"></h3>
           <div class="images d-flex justify-content-center">
             <img
               id="img-front"
-              class="rounded img-thumbnail border-0"
+              class="rounded-lg img-thumbnail border-primary bg-light"
               src=""
               alt="Pok&eacute;mon Front"
             />
             <img
               id="img-back"
-              class="rounded img-thumbnail border-0"
+              class="rounded-lg img-thumbnail border-primary bg-light"
               src=""
               alt="Pok&eacute;mon Back"
             />
@@ -103,14 +112,16 @@
             </div>
           </div>
         </div>
-        <div class="type-matchups card card-body">
+        <div
+          class="type-matchups card card-body bg-dark text-white border-white"
+        >
           <h2 class="text-center">Type Matchups</h2>
           <div class="matchup-flex d-flex justify-content-around">
             <div class="attack">
-              <h3>Attack</h3>
+              <h3 class="text-danger">Attack</h3>
             </div>
             <div class="defense">
-              <h3>Defense</h3>
+              <h3 class="text-success">Defense</h3>
             </div>
           </div>
         </div>
