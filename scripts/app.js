@@ -1,25 +1,30 @@
 // Add event listeners
 addEventListener("DOMContentLoaded", getPokemon);
-document.getElementById("pokemon-name").addEventListener("keyup", addOptions);
+document
+  .getElementById("pokemon-name")
+  .addEventListener("keyup", addInputOptions);
 document.getElementById("get-mons").addEventListener("click", getPokemon);
-document.getElementById("btn-male").addEventListener("click", addGender);
-document.getElementById("btn-female").addEventListener("click", addGender);
+document
+  .getElementById("btn-male")
+  .addEventListener("click", appendGenderString);
+document
+  .getElementById("btn-female")
+  .addEventListener("click", appendGenderString);
 document
   .getElementById("deoxys-normal")
-  .addEventListener("click", addDeoxysForm);
+  .addEventListener("click", appendDeoxysFormString);
 document
   .getElementById("deoxys-attack")
-  .addEventListener("click", addDeoxysForm);
+  .addEventListener("click", appendDeoxysFormString);
 document
   .getElementById("deoxys-defense")
-  .addEventListener("click", addDeoxysForm);
+  .addEventListener("click", appendDeoxysFormString);
 document
   .getElementById("deoxys-speed")
-  .addEventListener("click", addDeoxysForm);
+  .addEventListener("click", appendDeoxysFormString);
 
-// Adds the gender symbol onto the end of "nidoran" when the user clicks
-// the buttons that have appeared
-function addGender(e) {
+// Adds the gender symbol onto the end of the value in the input field
+function appendGenderString(e) {
   {
     let name = document.getElementById("pokemon-name");
     if (name.value.endsWith("\u2642") || name.value.endsWith("\u2640")) {
@@ -31,9 +36,9 @@ function addGender(e) {
   }
 }
 
-// Changes the text in the input field for deoxys variants depending on
-// the selection from the dropdown menu
-function addDeoxysForm(e) {
+// Changes the suffix of the value in the input field to the selection
+// chosen from the drop down menu
+function appendDeoxysFormString(e) {
   let name = document.getElementById("pokemon-name");
   if (name.value.indexOf("-") === -1) {
     name.value += `-${e.target.textContent.toLowerCase()}`;
@@ -47,26 +52,23 @@ function addDeoxysForm(e) {
 // Gets the requested pokemon from the API and populates the page fields with
 // the information from the response
 function getPokemon(e) {
-  // Get page elements to populate the data into
-  let name = document.getElementById("pokemon-name").value;
+  // Get UI elements to populate the data into
+  let inputValue = document.getElementById("pokemon-name").value;
   let output = document.getElementById("output");
   let nameHeading = document.getElementById("name-result");
-  let front = document.getElementById("img-front");
-  let back = document.getElementById("img-back");
+  let frontImg = document.getElementById("img-front");
+  let backImg = document.getElementById("img-back");
   let types = document.getElementById("type-result");
   let dexNum = document.getElementById("dex-num");
   let height = document.getElementById("height-val");
   let weight = document.getElementById("weight-val");
 
-  if (name.endsWith("\u2642")) {
-    name = name.replace("\u2642", "-m");
-  } else if (name.endsWith("\u2640")) {
-    name = name.replace("\u2640", "-f");
-  }
+  // Make sure the name from the input field is acceptable for the API
+  inputValue = toAPIString(inputValue);
 
-  // Get the info from the API and display on screen
+  // Get the info from the API and display the info in the UI
   httpGet(
-    `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}/`,
+    `https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`,
     response => {
       console.log(response);
       // The HTTP request completed successfully
@@ -74,29 +76,23 @@ function getPokemon(e) {
         // Populate the pokedex number
         dexNum.innerText = `No. ${response.id}`;
 
-        // Populate the images, front and back of the Pokemon
-        front.setAttribute("src", `${response.sprites.front_default}`);
-        back.setAttribute("src", `${response.sprites.back_default}`);
+        // Populate the images, front and back, of the Pokemon
+        frontImg.setAttribute("src", `${response.sprites.front_default}`);
+        backImg.setAttribute("src", `${response.sprites.back_default}`);
 
-        // Populate the name field with the name value from the response since
-        // the value of the input field isn't guaranteed to be the name (can
-        // also be dex number)
-        name = response.name;
+        let name = response.name;
 
-        // Append the gender symbol back onto the end of the name for
-        // nidoran
-        if (name.startsWith("nidoran") && name.endsWith("-m")) {
-          name = name.replace("-m", "\u2642");
-        } else if (name.startsWith("nidoran") && name.endsWith("-f")) {
-          name = name.replace("-f", "\u2640");
-        }
+        // Convert the pokemon name from the API response to one that looks
+        // better for the UI. Used for edge case pokemon with special names
+        // in the API database (ex. Nidoran)
+        name = toUIString(name);
 
         // Populate the name of the Pokemon
         nameHeading.innerText = `${name.charAt(0).toUpperCase() +
           name.slice(1)}`;
 
-        // Clear types from any previous queries and populate types for the
-        // new query
+        // Clear type bagdes from any previous queries and populate the page
+        // with type badges from the new query
         types.innerHTML = "";
         response.types.forEach(monType => {
           types.innerHTML += `<span class="btn type ${
@@ -110,19 +106,25 @@ function getPokemon(e) {
         weight.innerText = "";
 
         // Update height and weight with new query values
-        height.innerText = response.height / 10 + " m";
-        weight.innerText = response.weight / 10 + " kg";
+        height.innerText = `${response.height / 10} m`;
+        weight.innerText = `${response.weight / 10} kg`;
 
+        // Make the output area of the UI visible
         output.style.display = "block";
       } else {
+        // Hide the output area of the UI on error
         output.style.display = "none";
       }
     }
   );
 
+  // Prevent the submit button from submitting to the page
   e.preventDefault();
 }
 
+// Creates an XMLHttpRequest object and sends an HTTP GET request to the
+// provided url and calls the provided callback passing the response on
+// success and null on failure
 function httpGet(url, callback) {
   let xhr = new XMLHttpRequest();
   xhr.open("GET", url, true);
@@ -137,11 +139,13 @@ function httpGet(url, callback) {
   xhr.send();
 }
 
-// Adds special character options or prefix buttons for specific pokemon
-function addOptions(e) {
-  // Get the male and female buttons for nidoran
+// Adds UI elements for special input characters/substrings when the pokemon
+// they apply to is typed into the input field
+function addInputOptions(e) {
+  // Get the male and female button elements for nidoran genders
   let maleBtn = document.getElementById("btn-male");
   let femaleBtn = document.getElementById("btn-female");
+  // Get the drop down menu element for deoxys forms
   let deoxysMenu = document.getElementById("deoxysMenu");
 
   // Display the gender buttons when the user types "nidoran" and remove
@@ -155,10 +159,45 @@ function addOptions(e) {
   }
 
   // Show the drop down menu for deoxys forms once the user has
-  // typed "deoxys"
+  // typed "deoxys" and remove it once the input field's value no
+  // longer begins with "deoxys" (case-insensitive)
   if (e.target.value.toLowerCase().startsWith("deoxys")) {
     deoxysMenu.style.display = "inline";
   } else {
     deoxysMenu.style.display = "none";
   }
+}
+
+// Takes in a string from the UI input field that is unacceptable for
+// use in a call to the API and returns a new string that is acceptable
+// for use in an API call
+function toAPIString(uiString) {
+  let apiString;
+
+  if (uiString.startsWith("nidoran") && uiString.endsWith("\u2642")) {
+    apiString = uiString.replace("\u2642", "-m");
+  } else if (uiString.startsWith("nidoran") && uiString.endsWith("\u2640")) {
+    apiString = uiString.replace("\u2640", "-f");
+  } else {
+    apiString = uiString;
+  }
+
+  return apiString;
+}
+
+// Takes in a string from an API call response that is unacceptable
+// for display in the UI and returns a new string that is acceptable
+// for display in the UI
+function toUIString(apiString) {
+  let uiString;
+
+  if (apiString.startsWith("nidoran") && apiString.endsWith("-m")) {
+    uiString = apiString.replace("-m", "\u2642");
+  } else if (apiString.startsWith("nidoran") && apiString.endsWith("-f")) {
+    uiString = apiString.replace("-f", "\u2640");
+  } else {
+    uiString = apiString;
+  }
+
+  return uiString;
 }
