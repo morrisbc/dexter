@@ -22,6 +22,21 @@ document
 document
   .getElementById("deoxys-speed")
   .addEventListener("click", appendDeoxysFormString);
+document.getElementById("chevron").addEventListener("click", e => {
+  if (e.target.nodeName === "A") {
+    if (e.target.className.indexOf("rotate-180") === -1) {
+      e.target.className += " rotate-180";
+    } else {
+      e.target.className = "btn";
+    }
+  } else {
+    if (e.target.parentElement.className.indexOf("rotate-180") === -1) {
+      e.target.parentElement.className += " rotate-180";
+    } else {
+      e.target.parentElement.className = "btn";
+    }
+  }
+});
 
 // Adds the gender symbol onto the end of the value in the input field
 function appendGenderString(e) {

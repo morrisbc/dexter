@@ -34,6 +34,7 @@
   color: white;
   margin: 0 0.5rem;
   min-width: 85px;
+  font-weight: bold;
 }
 
 .weight-flex,
@@ -48,6 +49,10 @@
 
 .damage-multiplier {
   min-width: 65px;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
 }
 
 .normal {

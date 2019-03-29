@@ -14,6 +14,12 @@
       href="https://fonts.googleapis.com/css?family=Luckiest+Guy"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="styles/main.css" />
     <title>DexterV2</title>
   </head>
@@ -111,14 +117,30 @@
               <p id="weight-val" class="text-center"></p>
             </div>
           </div>
+          <div class="ability text-center">
+            <h4 id="mon-ability">Ability</h4>
+            <p id="ability-val"></p>
+          </div>
         </div>
         <div
           class="type-matchups card card-body bg-dark text-white border-white"
         >
-          <h2 class="mb-4 text-center">Damage Received By Type</h2>
-          <div
-            class="damage-types d-flex flex-wrap justify-content-center"
-          ></div>
+          <h2 class="mb-2 text-center">Damage Received By Type</h2>
+          <a
+            id="chevron"
+            href="#damage-types-collapse"
+            class="btn"
+            data-toggle="collapse"
+            role="button"
+            aria-expanded="false"
+            aria-controls="damage-types-collapse"
+            ><i class="fas fa-chevron-down text-white"></i
+          ></a>
+          <div class="collapse" id="damage-types-collapse">
+            <div
+              class="damage-types d-flex flex-wrap justify-content-center"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
