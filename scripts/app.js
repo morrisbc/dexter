@@ -71,15 +71,10 @@ function getResults(e) {
   let inputValue = document.getElementById("pokemon-name").value;
   let output = document.getElementById("output");
   let damageTypes = document.querySelector(".damage-types");
+  let hasLevitate = false;
 
   // Make sure the name from the input field is acceptable for the API
   inputValue = toAPIString(inputValue);
-
-  // httpGet(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
-  //   .then(pokemonResponse => {
-  //     getPokemon(pokemonResponse);
-  //   })
-  //   .catch(() => (output.style.display = "none"));
 
   fetch(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
     .then(pokemonResponse => {
@@ -87,15 +82,19 @@ function getResults(e) {
     })
     .then(pokemonData => {
       getPokemon(pokemonData);
-      return pokemonData.types;
+      return pokemonData;
     })
-    .then(pokemonTypes => {
-      Promise.all(
-        pokemonTypes.map(type =>
+    .then(pokemonData => {
+      if (pokemonData.abilities[0].ability.name === "levitate") {
+        hasLevitate = true;
+      }
+
+      return Promise.all(
+        pokemonData.types.map(type =>
           fetch(type.type.url).then(typeResponse => typeResponse.json())
         )
       ).then(typeObjects => {
-        let damages = calculateTypeMatchups(typeObjects);
+        let damages = calculateTypeMatchups(typeObjects, hasLevitate);
         console.log(damages);
         damageTypes.innerHTML = "";
         for (type in damages) {
@@ -171,15 +170,6 @@ function getPokemon(pokemon) {
   }
 }
 
-function httpGet(url) {
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then(response => response.json())
-      .then(data => resolve(data))
-      .catch(err => reject(err));
-  });
-}
-
 // Adds UI elements for special input characters/substrings when the pokemon
 // they apply to is typed into the input field
 function addInputOptions(e) {
@@ -243,7 +233,7 @@ function toUIString(apiString) {
   return uiString;
 }
 
-function calculateTypeMatchups(pokemonTypes) {
+function calculateTypeMatchups(pokemonTypes, hasLevitate) {
   let matchups = {
     normal: 1,
     fighting: 1,
@@ -264,6 +254,10 @@ function calculateTypeMatchups(pokemonTypes) {
     dark: 1,
     fairy: 1
   };
+
+  if (hasLevitate) {
+    matchups.ground = 0;
+  }
 
   pokemonTypes.forEach(type => {
     type.damage_relations.double_damage_from.forEach(doubleDamageType => {
