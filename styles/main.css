@@ -32,14 +32,22 @@
 
 .type {
   color: white;
-  margin-left: 0.5rem;
+  margin: 0 0.5rem;
   min-width: 85px;
 }
 
-/*Removes the left margin on the first type box*/
-.type:first-of-type {
-  margin-left: 0;
-  margin-right: 0.5rem;
+.weight-flex,
+.height-flex {
+  min-width: 80px;
+}
+
+.damage-type {
+  margin: 0.5rem;
+  min-width: 165px;
+}
+
+.damage-multiplier {
+  min-width: 65px;
 }
 
 .normal {

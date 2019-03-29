@@ -1,9 +1,9 @@
 // Add event listeners
-addEventListener("DOMContentLoaded", getPokemon);
+addEventListener("DOMContentLoaded", getResults);
 document
   .getElementById("pokemon-name")
   .addEventListener("keyup", addInputOptions);
-document.getElementById("get-mons").addEventListener("click", getPokemon);
+document.getElementById("get-mons").addEventListener("click", getResults);
 document
   .getElementById("btn-male")
   .addEventListener("click", appendGenderString);
@@ -49,11 +49,54 @@ function appendDeoxysFormString(e) {
   }
 }
 
-// Gets the requested pokemon from the API and populates the page fields with
-// the information from the response
-function getPokemon(e) {
-  // Get UI elements to populate the data into
+function getResults(e) {
   let inputValue = document.getElementById("pokemon-name").value;
+  let output = document.getElementById("output");
+  let damageTypes = document.querySelector(".damage-types");
+
+  // Make sure the name from the input field is acceptable for the API
+  inputValue = toAPIString(inputValue);
+
+  // httpGet(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
+  //   .then(pokemonResponse => {
+  //     getPokemon(pokemonResponse);
+  //   })
+  //   .catch(() => (output.style.display = "none"));
+
+  fetch(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
+    .then(pokemonResponse => {
+      return pokemonResponse.json();
+    })
+    .then(pokemonData => {
+      getPokemon(pokemonData);
+      return pokemonData.types;
+    })
+    .then(pokemonTypes => {
+      Promise.all(
+        pokemonTypes.map(type =>
+          fetch(type.type.url).then(typeResponse => typeResponse.json())
+        )
+      ).then(typeObjects => {
+        let damages = calculateTypeMatchups(typeObjects);
+        console.log(damages);
+        damageTypes.innerHTML = "";
+        for (type in damages) {
+          damageTypes.innerHTML += `<span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
+            .charAt(0)
+            .toUpperCase() +
+            type.slice(1)}</span><span class="btn bg-white damage-multiplier">${
+            damages[type]
+          }x</span></span>`;
+        }
+      });
+    })
+    .catch(() => (output.style.display = "none"));
+
+  e.preventDefault();
+}
+
+function getPokemon(pokemon) {
+  // Get UI elements to populate the data into
   let output = document.getElementById("output");
   let nameHeading = document.getElementById("name-result");
   let frontImg = document.getElementById("img-front");
@@ -63,80 +106,60 @@ function getPokemon(e) {
   let height = document.getElementById("height-val");
   let weight = document.getElementById("weight-val");
 
-  // Make sure the name from the input field is acceptable for the API
-  inputValue = toAPIString(inputValue);
-
   // Get the info from the API and display the info in the UI
-  httpGet(
-    `https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`,
-    response => {
-      console.log(response);
-      // The HTTP request completed successfully
-      if (response !== null) {
-        // Populate the pokedex number
-        dexNum.innerText = `No. ${response.id}`;
+  console.log(pokemon);
+  // The HTTP request completed successfully
+  if (pokemon !== null) {
+    // Populate the pokedex number
+    dexNum.innerText = `No. ${pokemon.id}`;
 
-        // Populate the images, front and back, of the Pokemon
-        frontImg.setAttribute("src", `${response.sprites.front_default}`);
-        backImg.setAttribute("src", `${response.sprites.back_default}`);
+    // Populate the images, front and back, of the Pokemon
+    frontImg.setAttribute("src", `${pokemon.sprites.front_default}`);
+    backImg.setAttribute("src", `${pokemon.sprites.back_default}`);
 
-        let name = response.name;
+    let name = pokemon.name;
 
-        // Convert the pokemon name from the API response to one that looks
-        // better for the UI. Used for edge case pokemon with special names
-        // in the API database (ex. Nidoran)
-        name = toUIString(name);
+    // Convert the pokemon name from the API response to one that looks
+    // better for the UI. Used for edge case pokemon with special names
+    // in the API database (ex. Nidoran)
+    name = toUIString(name);
 
-        // Populate the name of the Pokemon
-        nameHeading.innerText = `${name.charAt(0).toUpperCase() +
-          name.slice(1)}`;
+    // Populate the name of the Pokemon
+    nameHeading.innerText = `${name.charAt(0).toUpperCase() + name.slice(1)}`;
 
-        // Clear type bagdes from any previous queries and populate the page
-        // with type badges from the new query
-        types.innerHTML = "";
-        response.types.forEach(monType => {
-          types.innerHTML += `<span class="btn type ${
-            monType.type.name
-          }">${monType.type.name.charAt(0).toUpperCase() +
-            monType.type.name.slice(1)}</span>`;
-        });
+    // Clear type bagdes from any previous queries and populate the page
+    // with type badges from the new query
+    types.innerHTML = "";
+    pokemon.types.forEach((monType, index) => {
+      types.innerHTML += `<span class="btn type ${
+        monType.type.name
+      }">${monType.type.name.charAt(0).toUpperCase() +
+        monType.type.name.slice(1)}</span>`;
+    });
 
-        // Clear height and weight from previous query
-        height.innerText = "";
-        weight.innerText = "";
+    // Clear height and weight from previous query
+    height.innerText = "";
+    weight.innerText = "";
 
-        // Update height and weight with new query values
-        height.innerText = `${response.height / 10} m`;
-        weight.innerText = `${response.weight / 10} kg`;
+    // Update height and weight with new query values
+    height.innerText = `${pokemon.height / 10} m`;
+    weight.innerText = `${pokemon.weight / 10} kg`;
 
-        // Make the output area of the UI visible
-        output.style.display = "block";
-      } else {
-        // Hide the output area of the UI on error
-        output.style.display = "none";
-      }
-    }
-  );
-
-  // Prevent the submit button from submitting to the page
-  e.preventDefault();
+    // Make the output area of the UI visible
+    output.style.display = "block";
+  } else {
+    // Hide the output area of the UI on error
+    output.style.display = "none";
+  }
 }
 
-// Creates an XMLHttpRequest object and sends an HTTP GET request to the
-// provided url and calls the provided callback passing the response on
-// success and null on failure
-function httpGet(url, callback) {
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", url, true);
-  xhr.onload = () => {
-    if (xhr.status === 200) {
-      let response = JSON.parse(xhr.responseText);
-      callback(response);
-    } else {
-      callback(null);
-    }
-  };
-  xhr.send();
+function httpGet(url) {
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => resolve(data))
+      .catch(err => reject(err));
+  });
 }
 
 // Adds UI elements for special input characters/substrings when the pokemon
@@ -200,4 +223,41 @@ function toUIString(apiString) {
   }
 
   return uiString;
+}
+
+function calculateTypeMatchups(pokemonTypes) {
+  let matchups = {
+    normal: 1,
+    fighting: 1,
+    flying: 1,
+    poison: 1,
+    ground: 1,
+    rock: 1,
+    bug: 1,
+    ghost: 1,
+    steel: 1,
+    fire: 1,
+    water: 1,
+    grass: 1,
+    electric: 1,
+    psychic: 1,
+    ice: 1,
+    dragon: 1,
+    dark: 1,
+    fairy: 1
+  };
+
+  pokemonTypes.forEach(type => {
+    type.damage_relations.double_damage_from.forEach(doubleDamageType => {
+      matchups[`${doubleDamageType.name}`] *= 2;
+    });
+    type.damage_relations.half_damage_from.forEach(halfDamageType => {
+      matchups[`${halfDamageType.name}`] *= 0.5;
+    });
+    type.damage_relations.no_damage_from.forEach(zeroDamageType => {
+      matchups[`${zeroDamageType.name}`] *= 0;
+    });
+  });
+
+  return matchups;
 }
