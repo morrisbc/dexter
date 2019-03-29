@@ -27,13 +27,16 @@ document.getElementById("chevron").addEventListener("click", e => {
     if (e.target.className.indexOf("rotate-180") === -1) {
       e.target.className += " rotate-180";
     } else {
-      e.target.className = "btn";
+      e.target.className = e.target.className.replace("rotate-180", "");
     }
   } else {
     if (e.target.parentElement.className.indexOf("rotate-180") === -1) {
       e.target.parentElement.className += " rotate-180";
     } else {
-      e.target.parentElement.className = "btn";
+      e.target.parentElement.className = e.target.parentElement.className.replace(
+        "rotate-180",
+        ""
+      );
     }
   }
 });
