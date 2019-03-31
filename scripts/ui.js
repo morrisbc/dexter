@@ -103,7 +103,7 @@ class UI {
       this.damageTypes.innerHTML += `<span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
         .charAt(0)
         .toUpperCase() +
-        type.slice(1)}</span><span class="btn bg-white damage-multiplier">${
+        type.slice(1)}</span><span class="btn bg-white damage-multiplier p-1">${
         damages[type]
       }x</span></span>`;
     }
@@ -140,9 +140,15 @@ class UI {
   toAPIString(uiString) {
     let apiString;
 
-    if (uiString.startsWith("nidoran") && uiString.endsWith("\u2642")) {
+    if (
+      uiString.toLowerCase().startsWith("nidoran") &&
+      uiString.endsWith("\u2642")
+    ) {
       apiString = uiString.replace("\u2642", "-m");
-    } else if (uiString.startsWith("nidoran") && uiString.endsWith("\u2640")) {
+    } else if (
+      uiString.toLowerCase().startsWith("nidoran") &&
+      uiString.endsWith("\u2640")
+    ) {
       apiString = uiString.replace("\u2640", "-f");
     } else {
       apiString = uiString;

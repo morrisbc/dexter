@@ -44,11 +44,11 @@
 
 .damage-type {
   margin: 0.5rem;
-  min-width: 165px;
+  min-width: 145px;
 }
 
 .damage-multiplier {
-  min-width: 65px;
+  min-width: 50px;
 }
 
 .rotate-180 {
