@@ -55,6 +55,8 @@
   transform: rotate(180deg);
 }
 
+/* Color styling for each of the pokemon types */
+
 .normal {
   background-color: #a8a878;
 }

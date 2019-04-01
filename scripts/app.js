@@ -5,6 +5,12 @@ const ui = new UI();
 document.getElementById("get-mons").addEventListener("click", getResults);
 addEventListener("DOMContentLoaded", getResults);
 
+/**
+ * Main entry point of the application. Makes a fetch request to get the
+ * pokemon from the input field after clicking the submit button.
+ *
+ * @param {Event} e
+ */
 function getResults(e) {
   let inputValue = document.getElementById("pokemon-name").value,
     hasLevitate = false,
@@ -13,6 +19,7 @@ function getResults(e) {
   // Make sure the name from the input field is acceptable for the API
   inputValue = ui.toAPIString(inputValue);
 
+  // Get the requested pokemon
   fetch(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
     .then(pokemonResponse => {
       return pokemonResponse.json();
@@ -27,10 +34,13 @@ function getResults(e) {
       }
 
       return Promise.all(
+        // Fetch the type objects for each type the pokemon has
         pokemonData.types.map(type =>
           fetch(type.type.url).then(typeResponse => typeResponse.json())
         )
       ).then(typeObjects => {
+        // Once all objects have been received calculate the damage multipliers
+        // taken from all other types and populate the UI with the results
         damages = calculateTypeMatchups(typeObjects, hasLevitate);
         ui.populateDamageTypes(damages);
       });
@@ -40,6 +50,18 @@ function getResults(e) {
   e.preventDefault();
 }
 
+/**
+ * Calculates the damages received from each of the other pokemon types and
+ * returns them as an object with keys for each type and values representing
+ * the damage multiplier for incoming attacks.
+ *
+ * @param {Array} pokemonTypes - An array of pokemon type objects each containing
+ *                               information on damage taken from other types
+ * @param {boolean} hasLevitate - A boolean determining if the pokemon has
+ *                                the levitate ability
+ * @returns An object with keys for each pokemon type and values representing
+ *          the damage multiplier for attacks from each type
+ */
 function calculateTypeMatchups(pokemonTypes, hasLevitate) {
   let matchups = {
     normal: 1,
@@ -62,6 +84,7 @@ function calculateTypeMatchups(pokemonTypes, hasLevitate) {
     fairy: 1
   };
 
+  // The levitate ability negates the effects of ground type attacks
   if (hasLevitate) {
     matchups.ground = 0;
   }

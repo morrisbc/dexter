@@ -1,4 +1,13 @@
+/**
+ * Class used to contain the logic for manipulating the UI.
+ */
 class UI {
+  /**
+   * Constructor for the UI class. Gets all the necessary UI elements that will
+   * need to be manipulated as properties and adds event listeners to the UI
+   * elements that need them. This is done in the constructor to keep properties
+   * private and promote information hiding.
+   */
   constructor() {
     // Get the page elements that will need to be manipulated
     this.input = document.getElementById("pokemon-name");
@@ -42,12 +51,21 @@ class UI {
       .addEventListener("click", this.rotateButton);
   }
 
+  /**
+   * Takes in a pokemon object received from the PokeAPI and populates the UI
+   * with the information received within the object.
+   *
+   * @param {Object} pokemon Pokemon object received from the PokeAPI
+   */
   populatePokemon(pokemon) {
+    let name;
+
     console.log(pokemon);
     // Populate the pokedex number
     this.dexNum.innerText = `No. ${pokemon.id}`;
 
-    // Populate the images, front and back, of the Pokemon
+    // Populate the images, front and back, of the Pokemon. Populates with a
+    // pokeball if the API has no image for the Pokemon.
     if (pokemon.sprites.front_default !== null) {
       this.frontImg.setAttribute("src", `${pokemon.sprites.front_default}`);
     } else {
@@ -65,7 +83,7 @@ class UI {
       );
     }
 
-    let name = pokemon.name;
+    name = pokemon.name;
 
     // Convert the pokemon name from the API response to one that looks
     // better for the UI. Used for edge case pokemon with special names
@@ -97,7 +115,15 @@ class UI {
     this.showOutput();
   }
 
+  /**
+   * Takes in an object containing damage multipliers for each type of attack
+   * the pokemon can receive and displays this information in the UI.
+   *
+   * @param {Object} damages An object containing the damage multipliers for
+   *                         every attack type
+   */
   populateDamageTypes(damages) {
+    // Clear info from the previous query
     this.damageTypes.innerHTML = "";
     for (let type in damages) {
       this.damageTypes.innerHTML += `<span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
@@ -109,17 +135,28 @@ class UI {
     }
   }
 
+  /**
+   * Changes the visibility of the output field to hidden.
+   */
   hideOutput() {
     this.output.style.display = "none";
   }
 
+  /**
+   * Changes the visibility of the output field to visible.
+   */
   showOutput() {
     this.output.style.display = "block";
   }
 
-  // Takes in a string from an API call response that is unacceptable
-  // for display in the UI and returns a new string that is acceptable
-  // for display in the UI
+  /**
+   * Takes in a string from the API request and if necessary reformats it to
+   * match the string the user input before making the request. If both the input
+   * string and the one received from the API are a match the input is returned
+   * unchanged.
+   *
+   * @param {*} apiString The string received from the API request
+   */
   toUIString(apiString) {
     let uiString;
 
@@ -134,9 +171,15 @@ class UI {
     return uiString;
   }
 
-  // Takes in a string from the UI input field that is unacceptable for
-  // use in a call to the API and returns a new string that is acceptable
-  // for use in an API call
+  /**
+   * Takes in a string and assures that it is acceptable for an API request
+   * by checking if the string satisfies one of a few edge case pokemon. If
+   * theres a match the string is changed from what the user sees in the UI to
+   * one that will return a match when requesting the resource from the API.
+   * Otherwise the string is returned unchanged.
+   *
+   * @param {*} uiString The string from the pokemon input field in the UI
+   */
   toAPIString(uiString) {
     let apiString;
 
@@ -157,8 +200,13 @@ class UI {
     return apiString;
   }
 
-  // Adds UI elements for special input characters/substrings when the pokemon
-  // they apply to is typed into the input field
+  /**
+   * Adds special input options next to the submit button when the prefix of the
+   * pokemon they apply to is typed into the input field. (Ex. "nidoran" adds
+   * buttons for the gender symbols).
+   *
+   * @param {Event} e
+   */
   addInputOptions(e) {
     // Display the gender buttons when the user types "nidoran" and remove
     // them as soon as the input field no longer equals "nidoran" (case-insensitive)
@@ -180,8 +228,12 @@ class UI {
     }
   }
 
-  // Changes the suffix of the value in the input field to the selection
-  // chosen from the drop down menu
+  /**
+   * Changes the suffix of the value in the input field to the selection
+   * chosen from the deoxys drop down menu.
+   *
+   * @param {Event} e
+   */
   appendDeoxysFormString(e) {
     if (this.input.value.indexOf("-") === -1) {
       this.input.value += `-${e.target.textContent.toLowerCase()}`;
@@ -192,7 +244,11 @@ class UI {
     }
   }
 
-  // Adds the gender symbol onto the end of the value in the input field
+  /**
+   * Appends a gender symbol onto the end of the value in the input field.
+   *
+   * @param {Event} e
+   */
   appendGenderString(e) {
     if (
       this.input.value.endsWith("\u2642") ||
@@ -206,6 +262,12 @@ class UI {
     }
   }
 
+  /**
+   * Adds a class of 'rotate-180' that contains a CSS transform to rotate the
+   * element 180 degrees.
+   *
+   * @param {Event} e
+   */
   rotateButton(e) {
     if (e.target.nodeName === "A") {
       if (e.target.className.indexOf("rotate-180") === -1) {
