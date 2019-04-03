@@ -21,23 +21,51 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="styles/main.css" />
-    <title>DexterV2</title>
+    <title>DexterV2 | Pok&eacute;mon Info</title>
   </head>
   <body class="bg-dark pt-3">
     <div class="container bg-dark">
+      <nav class="navbar navbar-expand-md navbar-dark">
+        <a class="navbar-brand" href="#" id="logo"
+          ><span id="dexter">Dexter</span>V2</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mr-2">
+              <a class="nav-link text-white" href="#">Pok&eacute;mon Info</a>
+            </li>
+            <li class="nav-item ml-2 mr-2">
+              <a class="nav-link text-white" href="#">Type Charts</a>
+            </li>
+            <li class="nav-item ml-2">
+              <a href="team-eval.html" class="nav-link text-white"
+                >Team Evaluator</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
       <div class="card card-body bg-dark text-white border-white">
-        <h1 id="title-heading" class="text-center">
-          <span id="dexter">Dexter</span>V2
-        </h1>
         <form class="mon-form">
           <div class="form-group">
-            <label for="pokemon-name">Pok&eacute;mon Name</label>
+            <label for="pokemon-name">Pok&eacute;mon Name / Dex Number</label>
             <input
               type="text"
               class="form-control bg-dark text-white border-white"
               id="pokemon-name"
               placeholder="Pok&eacute;mon Name or Pok&eacute;dex Number ..."
-              value="Gengar"
             />
           </div>
           <div class="d-flex">
@@ -117,10 +145,6 @@
               <p id="weight-val" class="text-center"></p>
             </div>
           </div>
-          <!-- <div class="ability text-center">
-            <h4 id="mon-ability">Ability</h4>
-            <p id="ability-val"></p>
-          </div> -->
         </div>
         <div
           class="type-matchups card card-body bg-dark text-white border-white d-flex flex-column align-items-center"

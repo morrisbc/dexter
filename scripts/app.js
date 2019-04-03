@@ -3,7 +3,6 @@ const ui = new UI();
 
 // Add event listeners
 document.getElementById("get-mons").addEventListener("click", getResults);
-addEventListener("DOMContentLoaded", getResults);
 
 /**
  * Main entry point of the application. Makes a fetch request to get the
