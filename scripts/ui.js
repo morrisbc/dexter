@@ -10,7 +10,7 @@ class UI {
    */
   constructor() {
     // Get the page elements that will need to be manipulated
-    if (location.pathname.indexOf("index.html") !== -1) {
+    if (document.getElementById("pokemon-name") !== null) {
       this.input = document.getElementById("pokemon-name");
       this.output = document.getElementById("output");
       this.nameHeading = document.getElementById("name-result");
@@ -27,7 +27,7 @@ class UI {
     }
 
     // Add event listeners
-    if (location.pathname.indexOf("index.html") !== -1) {
+    if (document.getElementById("pokemon-name") !== null) {
       document
         .getElementById("pokemon-name")
         .addEventListener("keyup", this.addInputOptions.bind(this));
@@ -52,7 +52,7 @@ class UI {
       document
         .getElementById("chevron")
         .addEventListener("click", this.rotateButton);
-    } else if (location.pathname.indexOf("team-eval.html") !== -1) {
+    } else if (document.getElementById("member-1") !== null) {
       document
         .getElementById("member-1")
         .addEventListener("blur", this.populateTeamMember);
