@@ -1,16 +1,23 @@
-// Init UI Class
+// Init UI Class instance
 const ui = new UI();
 
 // Add event listeners
-document.getElementById("get-mons").addEventListener("click", getResults);
+if (location.pathname.indexOf("index.html") !== -1) {
+  document.getElementById("get-mons").addEventListener("click", getPokemonInfo);
+} else if (location.pathname.indexOf("team-eval.html") !== -1) {
+  //document.getElementById("get-mons").addEventListener("click", getPokemonInfo);
+}
 
 /**
- * Main entry point of the application. Makes a fetch request to get the
- * pokemon from the input field after clicking the submit button.
+ * "Main" function of the pokemon info section of the application. Calls the
+ * appropriate functions to get the request from the PokeAPI and populate the
+ * UI with the results.
  *
- * @param {Event} e
+ * @param {Event} e Event fired after pressing the "Get Pokemon" button
  */
-function getResults(e) {
+async function getPokemonInfo(e) {
+  e.preventDefault();
+
   let inputValue = document.getElementById("pokemon-name").value,
     hasLevitate = false,
     damages;
@@ -18,35 +25,31 @@ function getResults(e) {
   // Make sure the name from the input field is acceptable for the API
   inputValue = ui.toAPIString(inputValue);
 
-  // Get the requested pokemon
-  fetch(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}/`)
-    .then(pokemonResponse => {
-      return pokemonResponse.json();
-    })
-    .then(pokemonData => {
-      ui.populatePokemon(pokemonData);
-      return pokemonData;
-    })
-    .then(pokemonData => {
-      if (pokemonData.abilities[0].ability.name === "levitate") {
-        hasLevitate = true;
-      }
+  try {
+    // Get the pokemon data and populate the UI
+    let pokemonData = await pokeAPI.fetchPokemon(inputValue);
+    console.log(pokemonData);
+    ui.populatePokemonInfo(pokemonData);
 
-      return Promise.all(
-        // Fetch the type objects for each type the pokemon has
-        pokemonData.types.map(type =>
-          fetch(type.type.url).then(typeResponse => typeResponse.json())
-        )
-      ).then(typeObjects => {
-        // Once all objects have been received calculate the damage multipliers
-        // taken from all other types and populate the UI with the results
-        damages = calculateTypeMatchups(typeObjects, hasLevitate);
-        ui.populateDamageTypes(damages);
-      });
-    })
-    .catch(ui.hideOutput.bind(ui));
+    // Check the pokemon's abilities for levitate to use in the
+    // damages calculation later
+    if (pokemonData.abilities[0].ability.name === "levitate") {
+      hasLevitate = true;
+    }
 
-  e.preventDefault();
+    // Request type information for each of the pokemon's type[s] and
+    // collect them in an array for the damages calculation
+    let typePromises = pokemonData.types.map(type =>
+      pokeAPI.fetchType(type.type.name)
+    );
+    let typeObjects = await Promise.all(typePromises);
+
+    // Calculate the damages stats and populate the UI
+    damages = calculateTypeMatchups(typeObjects, hasLevitate);
+    ui.populateDamageTypes(damages);
+  } catch (e) {
+    ui.hideOutput();
+  }
 }
 
 /**
@@ -88,13 +91,19 @@ function calculateTypeMatchups(pokemonTypes, hasLevitate) {
     matchups.ground = 0;
   }
 
+  // For each type the pokemon has add the damage relations to the matchups
+  // object. Damage relations are multiplicative. For example, if one of the
+  // pokemon's types has a 2x damage from ground and the other has a 1/2x damage
+  // from ground the overall ground damage in matchups would be 1x.
   pokemonTypes.forEach(type => {
     type.damage_relations.double_damage_from.forEach(doubleDamageType => {
       matchups[`${doubleDamageType.name}`] *= 2;
     });
+
     type.damage_relations.half_damage_from.forEach(halfDamageType => {
       matchups[`${halfDamageType.name}`] *= 0.5;
     });
+
     type.damage_relations.no_damage_from.forEach(zeroDamageType => {
       matchups[`${zeroDamageType.name}`] *= 0;
     });
@@ -102,3 +111,5 @@ function calculateTypeMatchups(pokemonTypes, hasLevitate) {
 
   return matchups;
 }
+
+function getTeamEvaluation() {}

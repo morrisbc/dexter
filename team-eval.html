@@ -63,7 +63,7 @@
         <form>
           <div class="row">
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
@@ -78,11 +78,12 @@
                   type="text"
                   name="member-1"
                   id="member-1"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
@@ -97,11 +98,12 @@
                   type="text"
                   name="member-2"
                   id="member-2"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
@@ -116,11 +118,12 @@
                   type="text"
                   name="member-3"
                   id="member-3"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
@@ -134,17 +137,19 @@
                   type="text"
                   name="member-4"
                   id="member-4"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
                 src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
                 alt="Team Member Image"
                 id="mem-image-5"
+                placeholder="Name / Dex Number ..."
               />
               <h4 class="mt-2">5</h4>
 
@@ -154,11 +159,12 @@
                   type="text"
                   name="member-5"
                   id="member-5"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
             <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2"
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
             >
               <img
                 class="rounded-lg img-thumbnail border-primary bg-light"
@@ -173,10 +179,16 @@
                   type="text"
                   name="member-6"
                   id="member-6"
+                  placeholder="Name / Dex Number ..."
                 />
               </div>
             </div>
           </div>
+          <input
+            class="btn btn-primary btn-block mt-3"
+            type="submit"
+            value="Evaluate Team"
+          />
         </form>
       </div>
       <div id="output"></div>
@@ -200,6 +212,8 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-    <script src="scripts/test.js"></script>
+    <script src="scripts/pokeAPI.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/app.js"></script>
   </body>
 </html>
