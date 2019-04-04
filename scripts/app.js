@@ -2,10 +2,8 @@
 const ui = new UI();
 
 // Add event listeners
-if (location.pathname.indexOf("index.html") !== -1) {
+if (document.getElementById("get-mons") !== null) {
   document.getElementById("get-mons").addEventListener("click", getPokemonInfo);
-} else if (location.pathname.indexOf("team-eval.html") !== -1) {
-  //document.getElementById("get-mons").addEventListener("click", getPokemonInfo);
 }
 
 /**
