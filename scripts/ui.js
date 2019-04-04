@@ -10,45 +10,68 @@ class UI {
    */
   constructor() {
     // Get the page elements that will need to be manipulated
-    this.input = document.getElementById("pokemon-name");
-    this.output = document.getElementById("output");
-    this.nameHeading = document.getElementById("name-result");
-    this.frontImg = document.getElementById("img-front");
-    this.backImg = document.getElementById("img-back");
-    this.types = document.getElementById("type-result");
-    this.dexNum = document.getElementById("dex-num");
-    this.height = document.getElementById("height-val");
-    this.weight = document.getElementById("weight-val");
-    this.maleBtn = document.getElementById("btn-male");
-    this.femaleBtn = document.getElementById("btn-female");
-    this.deoxysMenu = document.getElementById("deoxysMenu");
-    this.damageTypes = document.querySelector(".damage-types");
+    if (location.pathname.indexOf("index.html") !== -1) {
+      this.input = document.getElementById("pokemon-name");
+      this.output = document.getElementById("output");
+      this.nameHeading = document.getElementById("name-result");
+      this.frontImg = document.getElementById("img-front");
+      this.backImg = document.getElementById("img-back");
+      this.types = document.getElementById("type-result");
+      this.dexNum = document.getElementById("dex-num");
+      this.height = document.getElementById("height-val");
+      this.weight = document.getElementById("weight-val");
+      this.maleBtn = document.getElementById("btn-male");
+      this.femaleBtn = document.getElementById("btn-female");
+      this.deoxysMenu = document.getElementById("deoxysMenu");
+      this.damageTypes = document.querySelector(".damage-types");
+    }
 
     // Add event listeners
-    document
-      .getElementById("pokemon-name")
-      .addEventListener("keyup", this.addInputOptions.bind(this));
-    document
-      .getElementById("btn-male")
-      .addEventListener("click", this.appendGenderString.bind(this));
-    document
-      .getElementById("btn-female")
-      .addEventListener("click", this.appendGenderString.bind(this));
-    document
-      .getElementById("deoxys-normal")
-      .addEventListener("click", this.appendDeoxysFormString.bind(this));
-    document
-      .getElementById("deoxys-attack")
-      .addEventListener("click", this.appendDeoxysFormString.bind(this));
-    document
-      .getElementById("deoxys-defense")
-      .addEventListener("click", this.appendDeoxysFormString.bind(this));
-    document
-      .getElementById("deoxys-speed")
-      .addEventListener("click", this.appendDeoxysFormString.bind(this));
-    document
-      .getElementById("chevron")
-      .addEventListener("click", this.rotateButton);
+    if (location.pathname.indexOf("index.html") !== -1) {
+      document
+        .getElementById("pokemon-name")
+        .addEventListener("keyup", this.addInputOptions.bind(this));
+      document
+        .getElementById("btn-male")
+        .addEventListener("click", this.appendGenderString.bind(this));
+      document
+        .getElementById("btn-female")
+        .addEventListener("click", this.appendGenderString.bind(this));
+      document
+        .getElementById("deoxys-normal")
+        .addEventListener("click", this.appendDeoxysFormString.bind(this));
+      document
+        .getElementById("deoxys-attack")
+        .addEventListener("click", this.appendDeoxysFormString.bind(this));
+      document
+        .getElementById("deoxys-defense")
+        .addEventListener("click", this.appendDeoxysFormString.bind(this));
+      document
+        .getElementById("deoxys-speed")
+        .addEventListener("click", this.appendDeoxysFormString.bind(this));
+      document
+        .getElementById("chevron")
+        .addEventListener("click", this.rotateButton);
+    } else if (location.pathname.indexOf("team-eval.html") !== -1) {
+      document
+        .getElementById("member-1")
+        .addEventListener("blur", this.populateTeamMember);
+      document
+        .getElementById("member-2")
+        .addEventListener("blur", this.populateTeamMember);
+      document
+        .getElementById("member-3")
+        .addEventListener("blur", this.populateTeamMember);
+      document
+        .getElementById("member-4")
+        .addEventListener("blur", this.populateTeamMember);
+      document
+        .getElementById("member-5")
+        .addEventListener("blur", this.populateTeamMember);
+      document
+        .getElementById("member-6")
+        .addEventListener("blur", this.populateTeamMember);
+    }
   }
 
   /**
@@ -57,10 +80,9 @@ class UI {
    *
    * @param {Object} pokemon Pokemon object received from the PokeAPI
    */
-  populatePokemon(pokemon) {
-    let name;
+  populatePokemonInfo(pokemon) {
+    let displayName;
 
-    console.log(pokemon);
     // Populate the pokedex number
     this.dexNum.innerText = `No. ${pokemon.id}`;
 
@@ -83,16 +105,16 @@ class UI {
       );
     }
 
-    name = pokemon.name;
+    displayName = pokemon.name;
 
     // Convert the pokemon name from the API response to one that looks
     // better for the UI. Used for edge case pokemon with special names
     // in the API database (ex. Nidoran)
-    name = this.toUIString(name);
+    displayName = this.toUIString(displayName);
 
     // Populate the name of the Pokemon
-    this.nameHeading.innerText = `${name.charAt(0).toUpperCase() +
-      name.slice(1)}`;
+    this.nameHeading.innerText = `${displayName.charAt(0).toUpperCase() +
+      displayName.slice(1)}`;
 
     // Clear type bagdes from any previous queries and populate the page
     // with type badges from the new query
@@ -126,13 +148,57 @@ class UI {
     // Clear info from the previous query
     this.damageTypes.innerHTML = "";
     for (let type in damages) {
-      this.damageTypes.innerHTML += `<span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
+      this.damageTypes.innerHTML += `
+        <span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
         .charAt(0)
         .toUpperCase() +
         type.slice(1)}</span><span class="btn bg-white damage-multiplier p-1">${
         damages[type]
       }x</span></span>`;
     }
+  }
+
+  /**
+   * Populates the UI with the image and name of the team member entered into
+   * the input field in the team evaluator section of the application.
+   *
+   * @param {Event} e
+   */
+  async populateTeamMember(e) {
+    if (e.target.value !== "") {
+      try {
+        let pokemonData = await pokeAPI.fetchPokemon(e.target.value);
+        let img = e.target.parentElement.parentElement.firstElementChild;
+        let name = img.nextElementSibling;
+
+        img.setAttribute("src", pokemonData.sprites.front_default);
+        name.innerText =
+          pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
+      } catch (e) {
+        console.log("Issue fetching resource");
+      }
+    } else {
+      resetTeamMember(e);
+    }
+  }
+
+  /**
+   * Resets a team member to the default image and name in the team evaluator
+   * section of the application.
+   *
+   * @param {Event} e Event passed in from another function. Used for DOM
+   *                  navigation when changing the elements in the markup.
+   */
+  resetTeamMember(e) {
+    let img, name;
+
+    img = e.target.parentElement.parentElement.firstElementChild;
+    name = img.nextElementSibling;
+    img.setAttribute(
+      "src",
+      "https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
+    );
+    name.innerText = e.target.id.slice(e.target.id.indexOf("-") + 1);
   }
 
   /**

@@ -25,17 +25,16 @@
   display: none;
 }
 
-/* .image-thumbnail {
-  border: 4px solid;
-} */
+.rounded-lg,
+.img-thumbnail {
+  border: 3px solid;
+}
 
 #img-front,
 #img-back {
-  min-width: 130px;
-  min-height: 130px;
   width: auto;
   height: auto;
-  border: 4px solid;
+  border: 3px solid;
 }
 
 .type {
