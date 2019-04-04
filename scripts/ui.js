@@ -55,22 +55,22 @@ class UI {
     } else if (document.getElementById("member-1") !== null) {
       document
         .getElementById("member-1")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
       document
         .getElementById("member-2")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
       document
         .getElementById("member-3")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
       document
         .getElementById("member-4")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
       document
         .getElementById("member-5")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
       document
         .getElementById("member-6")
-        .addEventListener("blur", this.populateTeamMember);
+        .addEventListener("blur", this.populateTeamMember.bind(this));
     }
   }
 
@@ -178,7 +178,7 @@ class UI {
         console.log("Issue fetching resource");
       }
     } else {
-      resetTeamMember(e);
+      this.resetTeamMember(e);
     }
   }
 
