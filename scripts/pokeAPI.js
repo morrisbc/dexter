@@ -12,7 +12,7 @@ class pokeAPI {
    * @returns A Promise containing the data on the requested pokemon
    * @throws An error if the fetch request fails
    */
-  static async fetchPokemon(identifier) {
+  static async fetchPokemonData(identifier) {
     let response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${identifier.toLowerCase()}/`
     );
@@ -30,7 +30,7 @@ class pokeAPI {
    * @returns A Promise containing the data on the requested type
    * @throws An error if the fetch request fails
    */
-  static async fetchType(identifier) {
+  static async fetchTypeData(identifier) {
     let response = await fetch(
       `https://pokeapi.co/api/v2/type/${identifier.toLowerCase()}/`
     );

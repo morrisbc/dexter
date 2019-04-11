@@ -43,7 +43,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-2">
+            <li class="nav-item ml-2 mr-2">
               <a class="nav-link text-white" href="index.html"
                 >Pok&eacute;mon Info</a
               >
@@ -51,7 +51,7 @@
             <li class="nav-item ml-2 mr-2">
               <a class="nav-link text-white" href="#">Type Charts</a>
             </li>
-            <li class="nav-item ml-2">
+            <li class="nav-item ml-2 mr-2">
               <a href="team-eval.html" class="nav-link text-white"
                 >Team Evaluator</a
               >
@@ -69,16 +69,36 @@
                 class="rounded-lg img-thumbnail border-primary bg-light"
                 src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
                 alt="Team Member Image"
-                id="mem-image-1"
+                id="mem-image-0"
               />
               <h4 class="mt-2">1</h4>
               <div class="form-group text-center">
                 <input
                   class="form-control bg-dark text-white mt-2"
                   type="text"
+                  name="member-0"
+                  id="member-0"
+                  placeholder="Dex Number / Name ..."
+                />
+              </div>
+            </div>
+            <div
+              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
+            >
+              <img
+                class="rounded-lg img-thumbnail border-primary bg-light"
+                src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
+                alt="Team Member Image"
+                id="mem-image-1"
+              />
+              <h4 class="mt-2">2</h4>
+              <div class="form-group text-center">
+                <input
+                  class="form-control bg-dark text-white mt-2"
+                  type="text"
                   name="member-1"
                   id="member-1"
-                  placeholder="Name / Dex Number ..."
+                  placeholder="Dex Number / Name ..."
                 />
               </div>
             </div>
@@ -91,14 +111,14 @@
                 alt="Team Member Image"
                 id="mem-image-2"
               />
-              <h4 class="mt-2">2</h4>
+              <h4 class="mt-2">3</h4>
               <div class="form-group text-center">
                 <input
                   class="form-control bg-dark text-white mt-2"
                   type="text"
                   name="member-2"
                   id="member-2"
-                  placeholder="Name / Dex Number ..."
+                  placeholder="Dex Number / Name ..."
                 />
               </div>
             </div>
@@ -111,14 +131,14 @@
                 alt="Team Member Image"
                 id="mem-image-3"
               />
-              <h4 class="mt-2">3</h4>
+              <h4 class="mt-2">4</h4>
               <div class="form-group text-center">
                 <input
                   class="form-control bg-dark text-white mt-2"
                   type="text"
                   name="member-3"
                   id="member-3"
-                  placeholder="Name / Dex Number ..."
+                  placeholder="Dex Number / Name ..."
                 />
               </div>
             </div>
@@ -129,15 +149,17 @@
                 class="rounded-lg img-thumbnail border-primary bg-light"
                 src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
                 alt="Team Member Image"
+                id="mem-image-4"
               />
-              <h4 class="mt-2">4</h4>
+              <h4 class="mt-2">5</h4>
+
               <div class="form-group text-center">
                 <input
                   class="form-control bg-dark text-white mt-2"
                   type="text"
                   name="member-4"
                   id="member-4"
-                  placeholder="Name / Dex Number ..."
+                  placeholder="Dex Number / Name ..."
                 />
               </div>
             </div>
@@ -149,49 +171,31 @@
                 src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
                 alt="Team Member Image"
                 id="mem-image-5"
-                placeholder="Name / Dex Number ..."
-              />
-              <h4 class="mt-2">5</h4>
-
-              <div class="form-group text-center">
-                <input
-                  class="form-control bg-dark text-white mt-2"
-                  type="text"
-                  name="member-5"
-                  id="member-5"
-                  placeholder="Name / Dex Number ..."
-                />
-              </div>
-            </div>
-            <div
-              class="col-md-4 d-flex align-items-center flex-column mt-2 mb-2 form-group"
-            >
-              <img
-                class="rounded-lg img-thumbnail border-primary bg-light"
-                src="https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
-                alt="Team Member Image"
-                id="mem-image-6"
               />
               <h4 class="mt-2">6</h4>
               <div class="form-group text-center">
                 <input
                   class="form-control bg-dark text-white mt-2"
                   type="text"
-                  name="member-6"
-                  id="member-6"
-                  placeholder="Name / Dex Number ..."
+                  name="member-5"
+                  id="member-5"
+                  placeholder="Dex Number / Name ..."
                 />
               </div>
             </div>
           </div>
           <input
+            id="eval-team"
             class="btn btn-primary btn-block mt-3"
             type="submit"
             value="Evaluate Team"
           />
         </form>
       </div>
-      <div id="output"></div>
+      <div id="output" class="card card-body bg-dark border-white">
+        <h2 class="text-center">Team Evaluation</h2>
+        <div class="damage-types d-flex flex-wrap justify-content-center"></div>
+      </div>
       <footer class="text-center text-white">
         <p>Relevant as of Generation VII</p>
         <p>Dexter &copy; 2019</p>

@@ -12,7 +12,6 @@ class UI {
     // Get the page elements that will need to be manipulated
     if (document.getElementById("pokemon-name") !== null) {
       this.input = document.getElementById("pokemon-name");
-      this.output = document.getElementById("output");
       this.nameHeading = document.getElementById("name-result");
       this.frontImg = document.getElementById("img-front");
       this.backImg = document.getElementById("img-back");
@@ -23,8 +22,11 @@ class UI {
       this.maleBtn = document.getElementById("btn-male");
       this.femaleBtn = document.getElementById("btn-female");
       this.deoxysMenu = document.getElementById("deoxysMenu");
-      this.damageTypes = document.querySelector(".damage-types");
     }
+
+    // Non page specific elements
+    this.output = document.getElementById("output");
+    this.damageTypes = document.querySelector(".damage-types");
 
     // Add event listeners
     if (document.getElementById("pokemon-name") !== null) {
@@ -52,25 +54,6 @@ class UI {
       document
         .getElementById("chevron")
         .addEventListener("click", this.rotateButton);
-    } else if (document.getElementById("member-1") !== null) {
-      document
-        .getElementById("member-1")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
-      document
-        .getElementById("member-2")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
-      document
-        .getElementById("member-3")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
-      document
-        .getElementById("member-4")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
-      document
-        .getElementById("member-5")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
-      document
-        .getElementById("member-6")
-        .addEventListener("blur", this.populateTeamMember.bind(this));
     }
   }
 
@@ -105,12 +88,10 @@ class UI {
       );
     }
 
-    displayName = pokemon.name;
-
     // Convert the pokemon name from the API response to one that looks
     // better for the UI. Used for edge case pokemon with special names
     // in the API database (ex. Nidoran)
-    displayName = this.toUIString(displayName);
+    displayName = this.toUIString(pokemon.name);
 
     // Populate the name of the Pokemon
     this.nameHeading.innerText = `${displayName.charAt(0).toUpperCase() +
@@ -141,19 +122,19 @@ class UI {
    * Takes in an object containing damage multipliers for each type of attack
    * the pokemon can receive and displays this information in the UI.
    *
-   * @param {Object} damages An object containing the damage multipliers for
-   *                         every attack type
+   * @param {Object} damageTypeMultipliers An object containing the damage
+   *                                       multipliers for every attack type
    */
-  populateDamageTypes(damages) {
+  populateDamageTypes(damageTypeMultipliers) {
     // Clear info from the previous query
     this.damageTypes.innerHTML = "";
-    for (let type in damages) {
+    for (let type in damageTypeMultipliers) {
       this.damageTypes.innerHTML += `
         <span class="btn type ${type} damage-type d-flex justify-content-between align-items-center"><span>${type
         .charAt(0)
         .toUpperCase() +
         type.slice(1)}</span><span class="btn bg-white damage-multiplier p-1">${
-        damages[type]
+        damageTypeMultipliers[type]
       }x</span></span>`;
     }
   }
@@ -163,23 +144,16 @@ class UI {
    * the input field in the team evaluator section of the application.
    *
    * @param {Event} e
+   * @param {Object} pokemonData Pokemon object containing data to populate
+   *                             into the UI
    */
-  async populateTeamMember(e) {
-    if (e.target.value !== "") {
-      try {
-        let pokemonData = await pokeAPI.fetchPokemon(e.target.value);
-        let img = e.target.parentElement.parentElement.firstElementChild;
-        let name = img.nextElementSibling;
+  populateTeamMember(e, pokemonData) {
+    let img = e.target.parentElement.parentElement.firstElementChild;
+    let name = img.nextElementSibling;
 
-        img.setAttribute("src", pokemonData.sprites.front_default);
-        name.innerText =
-          pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
-      } catch (e) {
-        console.log("Issue fetching resource");
-      }
-    } else {
-      this.resetTeamMember(e);
-    }
+    img.setAttribute("src", pokemonData.sprites.front_default);
+    name.innerText =
+      pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
   }
 
   /**
@@ -190,15 +164,15 @@ class UI {
    *                  navigation when changing the elements in the markup.
    */
   resetTeamMember(e) {
-    let img, name;
+    let img = e.target.parentElement.parentElement.firstElementChild;
+    let name = img.nextElementSibling;
 
-    img = e.target.parentElement.parentElement.firstElementChild;
-    name = img.nextElementSibling;
     img.setAttribute(
       "src",
       "https://github.com/PokeAPI/sprites/blob/master/sprites/items/poke-ball.png?raw=true"
     );
-    name.innerText = e.target.id.slice(e.target.id.indexOf("-") + 1);
+    name.innerText =
+      parseInt(e.target.id.slice(e.target.id.indexOf("-") + 1)) + 1;
   }
 
   /**

@@ -1,9 +1,40 @@
 // Init UI Class instance
 const ui = new UI();
 
+if (document.getElementById("member-0") !== null) {
+  teamMembers = [null, null, null, null, null, null];
+}
+
 // Add event listeners
 if (document.getElementById("get-mons") !== null) {
   document.getElementById("get-mons").addEventListener("click", getPokemonInfo);
+} else if (document.getElementById("member-0") !== null) {
+  document.querySelectorAll(".form-control").forEach(inputField => {
+    inputField.addEventListener("blur", updateTeamMember);
+  });
+  document
+    .getElementById("eval-team")
+    .addEventListener("click", getTeamEvaluation);
+}
+
+async function updateTeamMember(e) {
+  let pokemonData;
+
+  if (e.target.value !== "") {
+    try {
+      pokemonData = await pokeAPI.fetchPokemonData(e.target.value);
+      ui.populateTeamMember(e, pokemonData);
+      teamMembers[
+        e.target.id.slice(e.target.id.indexOf("-") + 1)
+      ] = pokemonData;
+    } catch (e) {
+      console.log("Issue fetching resource");
+    }
+  } else {
+    ui.resetTeamMember(e);
+    teamMembers[e.target.id.slice(e.target.id.indexOf("-") + 1)] = null;
+  }
+  console.log(numberOfMembers);
 }
 
 /**
@@ -17,7 +48,6 @@ async function getPokemonInfo(e) {
   e.preventDefault();
 
   let inputValue = document.getElementById("pokemon-name").value,
-    hasLevitate = false,
     damages;
 
   // Make sure the name from the input field is acceptable for the API
@@ -25,7 +55,7 @@ async function getPokemonInfo(e) {
 
   try {
     // Get the pokemon data and populate the UI
-    let pokemonData = await pokeAPI.fetchPokemon(inputValue);
+    let pokemonData = await pokeAPI.fetchPokemonData(inputValue);
     console.log(pokemonData);
     ui.populatePokemonInfo(pokemonData);
 
@@ -35,15 +65,8 @@ async function getPokemonInfo(e) {
       hasLevitate = true;
     }
 
-    // Request type information for each of the pokemon's type[s] and
-    // collect them in an array for the damages calculation
-    let typePromises = pokemonData.types.map(type =>
-      pokeAPI.fetchType(type.type.name)
-    );
-    let typeObjects = await Promise.all(typePromises);
-
     // Calculate the damages stats and populate the UI
-    damages = calculateTypeMatchups(typeObjects, hasLevitate);
+    damages = await calculateTypeMatchups(pokemonData);
     ui.populateDamageTypes(damages);
   } catch (e) {
     ui.hideOutput();
@@ -62,7 +85,7 @@ async function getPokemonInfo(e) {
  * @returns An object with keys for each pokemon type and values representing
  *          the damage multiplier for attacks from each type
  */
-function calculateTypeMatchups(pokemonTypes, hasLevitate) {
+async function calculateTypeMatchups(pokemonData) {
   let matchups = {
     normal: 1,
     fighting: 1,
@@ -84,8 +107,13 @@ function calculateTypeMatchups(pokemonTypes, hasLevitate) {
     fairy: 1
   };
 
+  let typePromises = pokemonData.types.map(type =>
+    pokeAPI.fetchTypeData(type.type.name)
+  );
+  let pokemonTypes = await Promise.all(typePromises);
+
   // The levitate ability negates the effects of ground type attacks
-  if (hasLevitate) {
+  if (pokemonData.abilities[0].ability.name === "levitate") {
     matchups.ground = 0;
   }
 
@@ -110,4 +138,59 @@ function calculateTypeMatchups(pokemonTypes, hasLevitate) {
   return matchups;
 }
 
-function getTeamEvaluation() {}
+/**
+ * "Main" entry point for the team evaluation section of the application.
+ *
+ * @param {Event} e
+ */
+async function getTeamEvaluation(e) {
+  e.preventDefault();
+
+  // Calculate the evaluation based on types for the whole team
+  const teamEvaluation = await calculateTeamMatchups();
+
+  // Populate the UI with the calculation
+  ui.populateDamageTypes(teamEvaluation);
+
+  ui.showOutput();
+}
+
+/**
+ * Calculates the evaluation for a pokemon team.
+ */
+async function calculateTeamMatchups() {
+  let teamEval = {
+    normal: 0,
+    fighting: 0,
+    flying: 0,
+    poison: 0,
+    ground: 0,
+    rock: 0,
+    bug: 0,
+    ghost: 0,
+    steel: 0,
+    fire: 0,
+    water: 0,
+    grass: 0,
+    electric: 0,
+    psychic: 0,
+    ice: 0,
+    dragon: 0,
+    dark: 0,
+    fairy: 0
+  };
+
+  const results = await Promise.all(
+    teamMembers.map(member => {
+      if (member != null) {
+        return calculateTypeMatchups(member);
+      }
+    })
+  );
+  results.forEach(result => {
+    for (let type in result) {
+      teamEval[type] += result[type];
+    }
+  });
+  return teamEval;
+}
