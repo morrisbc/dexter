@@ -27,14 +27,17 @@ async function updateTeamMember(e) {
       teamMembers[
         e.target.id.slice(e.target.id.indexOf("-") + 1)
       ] = pokemonData;
-    } catch (e) {
+    } catch (error) {
       console.log("Issue fetching resource");
+      ui.resetTeamMember(e);
+      teamMembers[e.target.id.slice(e.target.id.indexOf("-") + 1)] = null;
     }
   } else {
     ui.resetTeamMember(e);
     teamMembers[e.target.id.slice(e.target.id.indexOf("-") + 1)] = null;
   }
-  console.log(numberOfMembers);
+
+  e.preventDefault();
 }
 
 /**

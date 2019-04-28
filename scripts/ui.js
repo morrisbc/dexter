@@ -107,10 +107,6 @@ class UI {
         monType.type.name.slice(1)}</span>`;
     });
 
-    // Clear height and weight from previous query
-    this.height.innerText = "";
-    this.weight.innerText = "";
-
     // Update height and weight with new query values
     this.height.innerText = `${pokemon.height / 10} m`;
     this.weight.innerText = `${pokemon.weight / 10} kg`;
@@ -135,7 +131,7 @@ class UI {
         .toUpperCase() +
         type.slice(1)}</span><span class="btn bg-white damage-multiplier p-1">${
         damageTypeMultipliers[type]
-      }x</span></span>`;
+      }</span></span>`;
     }
   }
 

@@ -62,7 +62,7 @@
   transform: rotate(180deg);
 }
 
-/* Color styling for each of the pokemon types */
+/* Color styling for each of the pokemon type badges */
 
 .normal {
   background-color: #a8a878;
@@ -138,4 +138,16 @@
 
 #output {
   display: none;
+}
+
+.grass-text {
+  color: #78c850;
+}
+
+.fire-text {
+  color: #f08030;
+}
+
+.water-text {
+  color: #6890f0;
 }
