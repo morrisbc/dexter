@@ -42,6 +42,12 @@ class UI {
         .getElementById("chevron")
         .addEventListener("click", this.rotateButton);
     }
+
+    if (document.getElementById("member-0") !== null) {
+      document.querySelectorAll(".form-control").forEach(inputField => {
+        inputField.addEventListener("keyup", this.showSuggestions.bind(this));
+      });
+    }
   }
 
   /**
