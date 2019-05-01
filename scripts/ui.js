@@ -19,9 +19,6 @@ class UI {
       this.dexNum = document.getElementById("dex-num");
       this.height = document.getElementById("height-val");
       this.weight = document.getElementById("weight-val");
-      this.maleBtn = document.getElementById("btn-male");
-      this.femaleBtn = document.getElementById("btn-female");
-      this.deoxysMenu = document.getElementById("deoxysMenu");
     }
 
     // Non page specific elements
@@ -29,28 +26,18 @@ class UI {
     this.damageTypes = document.querySelector(".damage-types");
 
     // Add event listeners
+
+    addEventListener("DOMContentLoaded", () => {
+      fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
+        .then(resp => resp.json())
+        .then(data => (this.pokemonSuggestions = data.results))
+        .catch(() => console.log("Failed to fetch autocomplete resources."));
+    });
+
     if (document.getElementById("pokemon-name") !== null) {
       document
         .getElementById("pokemon-name")
-        .addEventListener("keyup", this.addInputOptions.bind(this));
-      document
-        .getElementById("btn-male")
-        .addEventListener("click", this.appendGenderString.bind(this));
-      document
-        .getElementById("btn-female")
-        .addEventListener("click", this.appendGenderString.bind(this));
-      document
-        .getElementById("deoxys-normal")
-        .addEventListener("click", this.appendDeoxysFormString.bind(this));
-      document
-        .getElementById("deoxys-attack")
-        .addEventListener("click", this.appendDeoxysFormString.bind(this));
-      document
-        .getElementById("deoxys-defense")
-        .addEventListener("click", this.appendDeoxysFormString.bind(this));
-      document
-        .getElementById("deoxys-speed")
-        .addEventListener("click", this.appendDeoxysFormString.bind(this));
+        .addEventListener("keyup", this.showSuggestions.bind(this));
       document
         .getElementById("chevron")
         .addEventListener("click", this.rotateButton);
@@ -214,7 +201,7 @@ class UI {
    * one that will return a match when requesting the resource from the API.
    * Otherwise the string is returned unchanged.
    *
-   * @param {*} uiString The string from the pokemon input field in the UI
+   * @param {String} uiString The string from the pokemon input field in the UI
    */
   toAPIString(uiString) {
     let apiString;
@@ -237,64 +224,30 @@ class UI {
   }
 
   /**
-   * Adds special input options next to the submit button when the prefix of the
-   * pokemon they apply to is typed into the input field. (Ex. "nidoran" adds
-   * buttons for the gender symbols).
+   * Shows up to five suggestions under an <input> contained
+   * within e.target. Assumes that the markup structure is as follows:
    *
-   * @param {Event} e
-   */
-  addInputOptions(e) {
-    // Display the gender buttons when the user types "nidoran" and remove
-    // them as soon as the input field no longer equals "nidoran" (case-insensitive)
-    if (e.target.value.toLowerCase().startsWith("nidoran")) {
-      this.maleBtn.style.display = "inline";
-      this.femaleBtn.style.display = "inline";
-    } else {
-      this.maleBtn.style.display = "none";
-      this.femaleBtn.style.display = "none";
-    }
-
-    // Show the drop down menu for deoxys forms once the user has
-    // typed "deoxys" and remove it once the input field's value no
-    // longer begins with "deoxys" (case-insensitive)
-    if (e.target.value.toLowerCase().startsWith("deoxys")) {
-      this.deoxysMenu.style.display = "inline";
-    } else {
-      this.deoxysMenu.style.display = "none";
-    }
-  }
-
-  /**
-   * Changes the suffix of the value in the input field to the selection
-   * chosen from the deoxys drop down menu.
+   * <input>
+   * <datalist>
    *
-   * @param {Event} e
+   * @param {Event} e Event object used to navigate the DOM and populate
+   *                  the suggestions
    */
-  appendDeoxysFormString(e) {
-    if (this.input.value.indexOf("-") === -1) {
-      this.input.value += `-${e.target.textContent.toLowerCase()}`;
-    } else {
-      this.input.value =
-        this.input.value.substring(0, this.input.value.indexOf("-")) +
-        `-${e.target.textContent.toLowerCase()}`;
-    }
-  }
+  showSuggestions(e) {
+    // Get the <datalist> under the <input>
+    const suggestionBox = e.target.nextElementSibling;
 
-  /**
-   * Appends a gender symbol onto the end of the value in the input field.
-   *
-   * @param {Event} e
-   */
-  appendGenderString(e) {
-    if (
-      this.input.value.endsWith("\u2642") ||
-      this.input.value.endsWith("\u2640")
-    ) {
-      this.input.value =
-        this.input.value.substring(0, this.input.value.length - 1) +
-        e.target.value;
-    } else {
-      this.input.value += e.target.value;
+    // Filter out all the non matching pokemon
+    const matches = this.pokemonSuggestions.filter(pokemon => {
+      return pokemon.name.startsWith(e.target.value);
+    });
+
+    suggestionBox.innerHTML = "";
+    // Add up to five suggestions under the input field
+    for (let match = 0; match < 5 && match < matches.length; match++) {
+      suggestionBox.innerHTML += `
+        <option>${matches[match].name}</option>
+      `;
     }
   }
 
