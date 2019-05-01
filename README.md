@@ -1,6 +1,6 @@
 # Dexter
 A tool designed to help trainers know type matchups between their 
-pokemon and their opponent's so they may use them to their advantage during
+Pok&eacute;mon and their opponent's so they may use them to their advantage during
 battles.
 
 # Motivation
