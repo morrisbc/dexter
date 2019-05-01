@@ -20,14 +20,21 @@ on what type they are, and what types they take the most damage from.
 - Team Evaluator: Takes up to six Pok&eacute;mon and forms an evaluation of the team for each attack type based on how effective attacks of that type are against each of your team members.
 
 # Tech Used
-- HTML 5
-- CSS 3
+- HTML5
+- CSS3
 - JavaScript (ES7)
 - [Bootstrap 4](https://getbootstrap.com/)
   
 # Other Resources Used
+- [Pok&eacute;API](https://pokeapi.co/)
 - [Font Awesome](https://fontawesome.com/)
 - [Google Fonts](https://fonts.google.com/)
+
+# Compatability
+Due to the use of some ES7 functionality, (specifically the fetch API and `async/await`) this application doesn't work in Internet Explorer. Additionally, the suggestions that appear below input fields won't work on Android WebView due to the use of the `<datalist>` HTML5 element. I apologize for any inconveniences here.
+
+# Credits
+Thanks to [Pok&eacute;API](https://pokeapi.co/) for providing such a great resource with tons of data to use.
 
 # Deployment
 [DexterV2](https://morrisbc.github.io/dexter/)
