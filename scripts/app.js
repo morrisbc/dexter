@@ -22,7 +22,7 @@ async function updateTeamMember(e) {
 
   if (e.target.value !== "") {
     try {
-      pokemonData = await pokeAPI.fetchPokemonData(e.target.value);
+      pokemonData = await pokeAPI.fetchPokemonData(e.target.value.trim());
       ui.populateTeamMember(e, pokemonData);
       teamMembers[
         e.target.id.slice(e.target.id.indexOf("-") + 1)
@@ -50,16 +50,11 @@ async function updateTeamMember(e) {
 async function getPokemonInfo(e) {
   e.preventDefault();
 
-  let inputValue = document.getElementById("pokemon-name").value,
-    damages;
-
-  // Make sure the name from the input field is acceptable for the API
-  inputValue = ui.toAPIString(inputValue);
+  let inputValue = document.getElementById("pokemon-name").value.trim();
 
   try {
     // Get the pokemon data and populate the UI
     let pokemonData = await pokeAPI.fetchPokemonData(inputValue);
-    console.log(pokemonData);
     ui.populatePokemonInfo(pokemonData);
 
     // Check the pokemon's abilities for levitate to use in the
